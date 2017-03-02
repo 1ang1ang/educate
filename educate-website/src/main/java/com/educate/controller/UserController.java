@@ -2,31 +2,52 @@ package com.educate.controller;
 
 import com.educate.model.User;
 import com.educate.service.UserService;
-import org.apache.log4j.Logger;
+import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Created by sun on 2017/3/1.
  */
-@Controller
+@RestController
+@RequestMapping(value="/users")
 public class UserController {
-
-    private Logger logger = Logger.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
+    /*
+     *  http://localhost:8080/swagger/index.html
+     */
 
-    @RequestMapping("/getUserInfo")
-    @ResponseBody
-    public User getUserInfo() {
-        User user = userService.getUserInfo();
-        if(user!=null){
-            System.out.println("user.getName():"+user.getName());
-            logger.info("user.getAge():"+user.getAge());
-        }
-        return user;
+    /**
+     *
+     * @return
+     */
+    @ApiOperation(value="Get all users",notes="requires noting")
+    @RequestMapping(method=RequestMethod.GET)
+    public List<User> getUsers(){
+//        List<User> list=new ArrayList<User>();
+
+//        User user=new User();
+//        user.setName("hello");
+//        list.add(user);
+//
+//        User user2=new User();
+//        user.setName("world");
+//        list.add(user2);
+        return userService.getAllUser();
+    }
+
+    @ApiOperation(value="Get user with id",notes="requires the id of user")
+    @RequestMapping(value="/{name}",method=RequestMethod.GET)
+    public User getUserById(@PathVariable String name){
+//        User user=new User();
+//        user.setName("hello world");
+        return userService.getUserInfo(name);
     }
 }

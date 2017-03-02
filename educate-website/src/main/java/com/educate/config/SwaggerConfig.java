@@ -14,8 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableSwagger
 @EnableAutoConfiguration
-public class SwaggerConfig
-{
+public class SwaggerConfig {
 
     private SpringSwaggerConfig springSwaggerConfig;
 
