@@ -20,9 +20,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    /*
-     *  http://localhost:8080/swagger/index.html
-     */
 
     /**
      *
@@ -31,23 +28,18 @@ public class UserController {
     @ApiOperation(value="Get all users",notes="requires noting")
     @RequestMapping(method=RequestMethod.GET)
     public List<User> getUsers(){
-//        List<User> list=new ArrayList<User>();
-
-//        User user=new User();
-//        user.setName("hello");
-//        list.add(user);
-//
-//        User user2=new User();
-//        user.setName("world");
-//        list.add(user2);
         return userService.getAllUser();
     }
 
     @ApiOperation(value="Get user with id",notes="requires the id of user")
-    @RequestMapping(value="/{name}",method=RequestMethod.GET)
-    public User getUserById(@PathVariable String name){
-//        User user=new User();
-//        user.setName("hello world");
-        return userService.getUserInfo(name);
+    @RequestMapping(value="id/{id}",method=RequestMethod.GET)
+    public User getUserById(@PathVariable String id){
+        return userService.getByUid(id);
+    }
+
+    @ApiOperation(value="Get user with name",notes="requires the name of user")
+    @RequestMapping(value="name/{name}",method=RequestMethod.GET)
+    public User getUserByName(@PathVariable String name){
+        return userService.getByName(name);
     }
 }

@@ -17,8 +17,14 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public User getUserInfo(String name){
-        User user=userMapper.findUserInfo(name);
+    public User getByUid(String uid){
+        User user=userMapper.selectByPrimaryKey(uid);
+        //User user=null;
+        return user;
+    }
+
+    public User getByName(String name){
+        User user=userMapper.selectByName(name);
         //User user=null;
         return user;
     }

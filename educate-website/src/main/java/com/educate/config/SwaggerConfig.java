@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * SWAGGER配置
+ * 访问地址：   http://localhost:8080/swagger/index.html
  * Created by sun on 2017/3/1.
  */
 @Configuration
@@ -28,6 +30,7 @@ public class SwaggerConfig {
         return  new SwaggerSpringMvcPlugin(this.springSwaggerConfig)
                 .apiInfo(new ApiInfo("api", "desc", null, null, null, null))
                 .useDefaultResponseMessages(false)
-                .includePatterns("/users.*");
+                .includePatterns("/users.*")
+                .includePatterns("/hello.*");
     }
 }
