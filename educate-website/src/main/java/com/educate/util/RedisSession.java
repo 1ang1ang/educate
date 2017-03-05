@@ -44,11 +44,11 @@ public class RedisSession {
 //    }
 
     public boolean exists(String key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             return jedis.exists(key);
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return false;
         } finally {
             jedis.close();
@@ -56,17 +56,17 @@ public class RedisSession {
     }
 
     public String set(String key, String field) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             String ret = jedis.set(key, field);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("set codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key + " field:" + field);
+                logger.info("set codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key + " field:" + field);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -74,17 +74,17 @@ public class RedisSession {
     }
 
     public String setex(String key, int ttl, String field){
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             String ret = jedis.setex(key, ttl, field);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("setex codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key + " field:" + field);
+                logger.info("setex codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key + " field:" + field);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -92,12 +92,12 @@ public class RedisSession {
     }
     
     public Long setnx(String key, String value){
+        Jedis jedis = jedisPool.getResource();
     	try {
-            Jedis jedis = jedisPool.getResource();
     		Long ret = jedis.setnx(key, value);
     		return ret;
     	} catch (Throwable e) {
-    		logger.error(getErrorOutPutInfo(),   e);
+    		logger.error(getErrorOutPutInfo(jedis),   e);
     		return null;
     	} finally {
             jedis.close();
@@ -105,17 +105,17 @@ public class RedisSession {
     }
 
     public String set(byte[] key, byte[] field) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             String ret = jedis.set(key, field);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("set [] codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key + " field:" + field);
+                logger.info("set [] codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key + " field:" + field);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -123,17 +123,17 @@ public class RedisSession {
     }
 
     public int hsetnx(String key, String field, String value) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long result = jedis.hsetnx(key, field, value);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hsetnx codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key + " field:" + field + " value:" + value);
+                logger.info("hsetnx codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key + " field:" + field + " value:" + value);
             }
             return (int) result;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 1;
         } finally {
             jedis.close();
@@ -141,17 +141,17 @@ public class RedisSession {
     }
 
     public Set<String> sMember(String key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             Set<String> set = jedis.smembers(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("sMember codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("sMember codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return set;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return new HashSet<>();
         } finally {
             jedis.close();
@@ -159,17 +159,17 @@ public class RedisSession {
     }
 
     public long sRem(String key, String... value) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long ret = jedis.srem(key, value);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("sRem codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("sRem codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -177,17 +177,17 @@ public class RedisSession {
     }
 
     public boolean sIsMember(String key, String member) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             boolean res = jedis.sismember(key, member);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("sIsMember codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("sIsMember codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return  res;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return false;
         } finally {
             jedis.close();
@@ -195,17 +195,17 @@ public class RedisSession {
     }
 
     public long sAdd(String key, String... value) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long res = jedis.sadd(key, value);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("sAdd codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("sAdd codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return res;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -214,16 +214,16 @@ public class RedisSession {
 
     public String spop(String key) {
         String ret = null;
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             ret = jedis.spop(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("spop codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("spop codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
@@ -231,40 +231,40 @@ public class RedisSession {
     }
 
     public void del(byte[] key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             jedis.del(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("del [] codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("del [] codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
     }
 
     public void del(String key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             jedis.del(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("del codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("del codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
     }
 
     public long del(List<String> keys) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             if(keys == null || keys.isEmpty()){
                 return 0;
             }
@@ -273,11 +273,11 @@ public class RedisSession {
             long res = jedis.del(keyArr);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("dels codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + keys);
+                logger.info("dels codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + keys);
             }
             return res;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
@@ -286,16 +286,16 @@ public class RedisSession {
 
     public long lPush(String key, String value) {
         long ret = 0;
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             ret = jedis.lpush(key, value);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("lPush codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("lPush codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
@@ -304,16 +304,16 @@ public class RedisSession {
 
     public List<String> lRange(String key, long start, long end) {
         List<String> ret = null;
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             ret = jedis.lrange(key, start, end);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("lRange codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("lRange codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
@@ -322,16 +322,16 @@ public class RedisSession {
 
     public String rPop(String key) {
         String ret = null;
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             ret = jedis.rpop(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("rPop codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("rPop codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
@@ -340,16 +340,16 @@ public class RedisSession {
 
     public String lpop(String key) {
         String ret = null;
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             ret = jedis.lpop(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("lpop codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("lpop codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
@@ -358,16 +358,16 @@ public class RedisSession {
 
     public Set<String> keys(String pattern) {
         Set<String> ret;
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             ret = jedis.keys(pattern);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("keys codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + pattern);
+                logger.info("keys codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + pattern);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return new HashSet<>();
         } finally {
                 jedis.close();
@@ -377,16 +377,16 @@ public class RedisSession {
 
     public String lIndex(String key, long count) {
         String ret;
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             ret = jedis.lindex(key, count);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("lIndex codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("lIndex codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             ret = null;
         } finally {
                 jedis.close();
@@ -396,16 +396,16 @@ public class RedisSession {
 
     public long rPush(String key, String value) {
         long ret = 0;
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             ret = jedis.rpush(key, value);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("rPush codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("rPush codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
@@ -413,17 +413,17 @@ public class RedisSession {
     }
 
     public String get(String key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             String ret = jedis.get(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("get codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("get codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -431,12 +431,12 @@ public class RedisSession {
     }
     
     public String getSet(String key, String value) {
+        Jedis jedis = jedisPool.getResource();
     	try {
-            Jedis jedis = jedisPool.getResource();
             String ret = jedis.getSet(key, value);
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -445,17 +445,17 @@ public class RedisSession {
 
 
     public byte[] get(byte[] key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             byte[] ret = jedis.get(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("get[] codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("get[] codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -463,17 +463,17 @@ public class RedisSession {
     }
 
     public long incrBy(String key, long incValue) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long ret = jedis.incrBy(key, incValue);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("incrBy codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("incrBy codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -481,17 +481,17 @@ public class RedisSession {
     }
 
     public long incr(String key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long ret = jedis.incr(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("incr codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("incr codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -499,17 +499,17 @@ public class RedisSession {
     }
 
     public long decr(String key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long ret = jedis.decr(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("decr codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("decr codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -517,17 +517,17 @@ public class RedisSession {
     }
 
     public byte[] hGet(byte[] key, byte[] field) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             byte[] ret = jedis.hget(key, field);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hGet[] codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key + " field:" + field);
+                logger.info("hGet[] codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key + " field:" + field);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -535,17 +535,17 @@ public class RedisSession {
     }
 
     public String hGet(String key, String field) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             String ret = jedis.hget(key, field);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hGet codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key + " field:" + field);
+                logger.info("hGet codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key + " field:" + field);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -553,17 +553,17 @@ public class RedisSession {
     }
 
     public List<String> hMGet(String key, String... field) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             List<String> ret = jedis.hmget(key, field);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hMGet codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key + " field:" + field);
+                logger.info("hMGet codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key + " field:" + field);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return new ArrayList<>();
         } finally {
             jedis.close();
@@ -571,8 +571,8 @@ public class RedisSession {
     }
 
     public List<String> hMGet(String key, List<String> fields) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             String[] arr = new String[fields.size()];
             int i = 0;
             for (String item : fields) {
@@ -582,11 +582,11 @@ public class RedisSession {
             List<String> ret = jedis.hmget(key, arr);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hMGet codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key + " field:" + fields);
+                logger.info("hMGet codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key + " field:" + fields);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return new ArrayList<>();
         } finally {
             jedis.close();
@@ -594,17 +594,17 @@ public class RedisSession {
     }
 
     public Map<String, String> hMGetAll(String key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             Map<String, String> ret = jedis.hgetAll(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hMGetAll codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("hMGetAll codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return new HashMap<>();
         } finally {
             jedis.close();
@@ -612,48 +612,48 @@ public class RedisSession {
     }
 
     public void setExpireTime(String key, int seconds) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             jedis.expire(key, seconds);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("setExpireTime codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("setExpireTime codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
     }
     
     public void pexpire(String key, long milliseconds) {
+        Jedis jedis = jedisPool.getResource();
     	try {
-            Jedis jedis = jedisPool.getResource();
     		long beginTime = System.currentTimeMillis();
     		jedis.pexpire(key, milliseconds);
     		long diff = System.currentTimeMillis() - beginTime;
     		if (diff > 1000){
-    			logger.info("setExpireTime codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+    			logger.info("setExpireTime codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
     		}
     	} catch (Throwable e) {
-    		logger.error(getErrorOutPutInfo(),   e);
+    		logger.error(getErrorOutPutInfo(jedis),   e);
     	} finally {
             jedis.close();
     	}
     }
 
     public void setPExpireTime(String key, long time) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             jedis.pexpireAt(key, time);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("setPExpireTime codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("setPExpireTime codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
 
@@ -662,18 +662,18 @@ public class RedisSession {
 
     public String hMSet(String key, String nestedKey, String value) {
         Map<String, String> map = new HashMap<>();
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             map.put(nestedKey, value);
             String ret = jedis.hmset(key, map);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hMSet codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("hMSet codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -681,17 +681,17 @@ public class RedisSession {
     }
 
     public String hMSet(String key, Map<String, String> map) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             String ret = jedis.hmset(key, map);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hMSet codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("hMSet codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -707,17 +707,17 @@ public class RedisSession {
     }
 
     public long hDel(String key, String... fields) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long ret = jedis.hdel(key, fields);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hDel codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("hDel codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -726,17 +726,17 @@ public class RedisSession {
     }
 
     public long hSet(byte[] key, byte[] field, byte[] value) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long ret = jedis.hset(key, field, value);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hSet[] codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("hSet[] codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -745,17 +745,17 @@ public class RedisSession {
 
 
     public long hSet(String key, String field, String value) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long ret = jedis.hset(key, field, value);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hSet codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("hSet codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -764,16 +764,16 @@ public class RedisSession {
 
     public Set<String> hKeys(String key) {
         Set<String> fields = new HashSet<>();
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             fields = jedis.hkeys(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hKeys codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("hKeys codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return fields;
         } finally {
             jedis.close();
@@ -782,17 +782,17 @@ public class RedisSession {
     }
 
     public long hLen(String key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long length = jedis.hlen(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hLen codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("hLen codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return length;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -800,17 +800,17 @@ public class RedisSession {
     }
 
     public boolean hExists(String key, String field) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             boolean ret = jedis.hexists(key, field);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("hExists codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("hExists codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return false;
         } finally {
             jedis.close();
@@ -818,17 +818,17 @@ public class RedisSession {
     }
 
     public long pushListFromLeft(String key, String... members) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long ret = jedis.lpush(key, members);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("pushListFromLeft codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("pushListFromLeft codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -836,17 +836,17 @@ public class RedisSession {
     }
 
     public String lSet(String key, long index, String members) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             String ret = jedis.lset(key, index, members);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("lSet codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("lSet codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -854,17 +854,17 @@ public class RedisSession {
     }
 
     public List<String> getRangeList(String key, long start, long end) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             List<String> retList = jedis.lrange(key, start, end);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("getRangeList codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key + " start:"+ start + " end:" + end);
+                logger.info("getRangeList codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key + " start:"+ start + " end:" + end);
             }
             return retList;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return new ArrayList<>();
         } finally {
             jedis.close();
@@ -872,17 +872,17 @@ public class RedisSession {
     }
 
     public long getLength(String key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long length = jedis.llen(key);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("getLength codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("getLength codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return length;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -890,17 +890,17 @@ public class RedisSession {
     }
 
     public List<byte[]> getRangeList(byte[] key, int start, int end) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             List<byte[]> retList = jedis.lrange(key, start, end);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("getRangeList[] codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("getRangeList[] codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return retList;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return new ArrayList<>();
         } finally {
             jedis.close();
@@ -908,44 +908,44 @@ public class RedisSession {
     }
 
     public void lRem(String key, int count, String value) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             jedis.lrem(key, count, value);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("lRem codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("lRem codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
     }
 
     public void lTrim(String key, int start, int end) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             jedis.ltrim(key, start, end);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("lTrim codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("lTrim codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
     }
 
     public String deleteListFromRight(String key) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             String retList = jedis.rpop(key);
             return retList;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return null;
         } finally {
             jedis.close();
@@ -953,11 +953,11 @@ public class RedisSession {
     }
 
     public long hincrBy(String key, String field, long num) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             return jedis.hincrBy(key, field, num);
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -965,17 +965,17 @@ public class RedisSession {
     }
 
     public double zincrby(String key, String member, double score){
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             double res = jedis.zincrby(key, score, member);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("zincrby codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("zincrby codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return res;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -983,17 +983,17 @@ public class RedisSession {
     }
 
     public long zAdd(String key, String member, double score) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             long res = jedis.zadd(key, score, member);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("zAdd codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("zAdd codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return res;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -1001,14 +1001,14 @@ public class RedisSession {
     }
 
     public long zAdd(String key, Map<String, Double> scoreMap){
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             if(scoreMap == null || scoreMap.isEmpty()){
                 return 0;
             }
             return jedis.zadd(key, scoreMap);
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -1016,11 +1016,11 @@ public class RedisSession {
     }
 
     public Optional<Double> zScore(String key, String member) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             return Optional.fromNullable(jedis.zscore(key, member));
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return Optional.absent();
         } finally {
             jedis.close();
@@ -1032,11 +1032,11 @@ public class RedisSession {
     }
 
     public Optional<Long> zCount(String key, double min, double max) {
+        Jedis jedis = jedisPool.getResource();
     	try {
-            Jedis jedis = jedisPool.getResource();
     		return Optional.fromNullable(jedis.zcount(key, min, max));
     	} catch (Throwable e) {
-    		logger.error(getErrorOutPutInfo(),   e);
+    		logger.error(getErrorOutPutInfo(jedis),   e);
     		return Optional.absent();
     	} finally {
             jedis.close();
@@ -1044,11 +1044,11 @@ public class RedisSession {
     }
     
     public Optional<Long> lLength(String key) {
+        Jedis jedis = jedisPool.getResource();
     	try {
-            Jedis jedis = jedisPool.getResource();
     		return Optional.fromNullable(jedis.llen(key));
     	} catch (Throwable e) {
-    		logger.error(getErrorOutPutInfo(),   e);
+    		logger.error(getErrorOutPutInfo(jedis),   e);
     		return Optional.absent();
     	} finally {
             jedis.close();
@@ -1056,11 +1056,11 @@ public class RedisSession {
 	}
 
     public Optional<Long> zGetRankByAsc(String key, String member) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             return Optional.fromNullable(jedis.zrank(key, member));
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return Optional.absent();
         } finally {
             jedis.close();
@@ -1068,11 +1068,11 @@ public class RedisSession {
     }
 
     public Optional<Long> zGetRankByDesc(String key, String member) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             return Optional.fromNullable(jedis.zrevrank(key, member));
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return Optional.absent();
         } finally {
             jedis.close();
@@ -1080,14 +1080,14 @@ public class RedisSession {
     }
     
     public Optional<Integer> getInt(String key) {
+        Jedis jedis = jedisPool.getResource();
     	try {
-            Jedis jedis = jedisPool.getResource();
             String ret = jedis.get(key);
             if(ret != null){
             	return Optional.fromNullable(Integer.valueOf(ret));
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
@@ -1095,14 +1095,14 @@ public class RedisSession {
     }
 
     public Optional<Long> getLong(String key) {
+        Jedis jedis = jedisPool.getResource();
     	try {
-            Jedis jedis = jedisPool.getResource();
     		String ret = jedis.get(key);
     		if(ret != null){
     			return Optional.fromNullable(Long.valueOf(ret));
     		}
     	} catch (Throwable e) {
-    		logger.error(getErrorOutPutInfo(),   e);
+    		logger.error(getErrorOutPutInfo(jedis),   e);
     	} finally {
             jedis.close();
     	}
@@ -1110,14 +1110,14 @@ public class RedisSession {
     }
 
     public Optional<String> getString(String key) {
+        Jedis jedis = jedisPool.getResource();
     	try {
-            Jedis jedis = jedisPool.getResource();
     		String ret = jedis.get(key);
     		if(ret != null){
     			return Optional.fromNullable(ret);
     		}
     	} catch (Throwable e) {
-    		logger.error(getErrorOutPutInfo(),   e);
+    		logger.error(getErrorOutPutInfo(jedis),   e);
     	} finally {
             jedis.close();
     	}
@@ -1125,11 +1125,11 @@ public class RedisSession {
     }
 
     public long zRemByRank(String key, long start, long end){
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             return jedis.zremrangeByRank(key, start, end);
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -1137,11 +1137,11 @@ public class RedisSession {
     }
 
     public long zRem(String key, String... members){
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             return jedis.zrem(key, members);
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -1151,17 +1151,17 @@ public class RedisSession {
 
     public Set<String> zRangeByRankAsc(String key, long start, long end){
         Set<String> ret = new LinkedHashSet<>();
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             ret = jedis.zrange(key, start, end);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("zRangeByRankAsc codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("zRangeByRankAsc codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return ret;
         } finally {
             jedis.close();
@@ -1170,17 +1170,17 @@ public class RedisSession {
     
     public Set<String> zRangeByRankDesc(String key, long start, long end){
         Set<String> ret = new LinkedHashSet<>();
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             ret = jedis.zrevrange(key, start, end);
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("zRangeByRankDesc codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("zRangeByRankDesc codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return ret;
         } finally {
             jedis.close();
@@ -1189,8 +1189,8 @@ public class RedisSession {
 
     public HashMap<String, Double> zRangByAsc(String key, long start, long end) {
         HashMap<String, Double> ret = new HashMap<>();
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             Set<Tuple> result = jedis.zrangeWithScores(key, start, end);
             if (result != null && result.size() > 0) {
@@ -1200,11 +1200,11 @@ public class RedisSession {
             }
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("zRangByAsc codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("zRangByAsc codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return ret;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return ret;
         } finally {
             jedis.close();
@@ -1219,8 +1219,8 @@ public class RedisSession {
      */
     public List<PairUtil> zRangByDesc(String key, long start, long end) {
         List<PairUtil> retList = new LinkedList<>();
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             Set<Tuple> result = jedis.zrevrangeWithScores(key, start, end);
             if (result != null && result.size() > 0) {
@@ -1231,11 +1231,11 @@ public class RedisSession {
             }
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("zRangByDesc codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + key);
+                logger.info("zRangByDesc codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + key);
             }
             return retList;
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return retList;
         } finally {
             jedis.close();
@@ -1243,27 +1243,27 @@ public class RedisSession {
     }
 
     public void subscribe(JedisPubSub listener, List<String> channels) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             long beginTime = System.currentTimeMillis();
             jedis.subscribe(listener, channels.toArray(new String[]{}));
             long diff = System.currentTimeMillis() - beginTime;
             if (diff > 1000){
-                logger.info("getBatch codis : "+ getErrorOutPutInfo() + " slow cost : " + diff);
+                logger.info("getBatch codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff);
             }
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
         } finally {
             jedis.close();
         }
     }
 
     public long publish(String channel, String msg) {
+        Jedis jedis = jedisPool.getResource();
         try {
-            Jedis jedis = jedisPool.getResource();
             return jedis.publish(channel, msg);
         } catch (Throwable e) {
-            logger.error(getErrorOutPutInfo(),   e);
+            logger.error(getErrorOutPutInfo(jedis),   e);
             return 0;
         } finally {
             jedis.close();
@@ -1278,14 +1278,14 @@ public class RedisSession {
 //        this.mode = mode;
 //    }
 
-    public void setJedis(Jedis jedis) {
-        this.jedis = jedis;
-    }
+//    public void setJedis(Jedis jedis) {
+//        this.jedis = jedis;
+//    }
 
 //    public Map<String, String> getBatch(RedisKey redisKey, Collection<String> list) {
 //        Map<String, String> result = new HashMap<>();
 //        try {
-            Jedis jedis = jedisPool.getResource();
+//            Jedis jedis = jedisPool.getResource();
 //            long beginTime = System.currentTimeMillis();
 //            for (String uid : list) {
 //                String v = jedis.get(redisKey.suffix(uid));
@@ -1295,11 +1295,11 @@ public class RedisSession {
 //            }
 //            long diff = System.currentTimeMillis() - beginTime;
 //            if (diff > 1000){
-//                logger.info("getBatch codis : "+ getErrorOutPutInfo() + " slow cost : " + diff + " key:" + redisKey);
+//                logger.info("getBatch codis : "+ getErrorOutPutInfo(jedis) + " slow cost : " + diff + " key:" + redisKey);
 //            }
 //
 //        } catch (Throwable e) {
-//            logger.error(getErrorOutPutInfo(),   e);
+//            logger.error(getErrorOutPutInfo(jedis),   e);
 //            return result;
 //        } finally {
 //            jedis.close();
@@ -1395,7 +1395,7 @@ public class RedisSession {
 //		return autoClose;
 //	}
 	
-	private String getErrorOutPutInfo() {
+	private String getErrorOutPutInfo(Jedis jedis) {
         return "redis : " + jedis == null ? "null" : jedis.getClient().getHost();
     }
 }
