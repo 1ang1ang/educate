@@ -1,4 +1,4 @@
-package com.educate.common;
+package com.educate.error;
 
 /**
  * Created by guoyang on 2017/3/2.

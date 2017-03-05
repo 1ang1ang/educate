@@ -3,17 +3,19 @@
 <mapper namespace="com.educate.mapper.UserMapper" >
   <resultMap id="BaseResultMap" type="com.educate.model.User" >
     <id column="uid" property="uid" jdbcType="VARCHAR" />
-    <result column="phoneNum" property="phonenum" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="lastLoginType" property="lastlogintype" jdbcType="INTEGER" />
+    <result column="last_login_type" property="lastLoginType" jdbcType="INTEGER" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="age" property="age" jdbcType="INTEGER" />
     <result column="identity" property="identity" jdbcType="INTEGER" />
+    <result column="register_time" property="registerTime" jdbcType="BIGINT" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    uid, phoneNum, email, lastLoginType, password, gender, name, age, identity
+    uid, phone_num, email, last_login_type, password, gender, name, age, identity
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -27,6 +29,18 @@
     from user
     where name = #{name,jdbcType=VARCHAR}
   </select>
+  <select id="selectByEmail" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where email = #{email,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where phone_num = #{phone,jdbcType=VARCHAR}
+  </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -37,13 +51,13 @@
     where uid = #{uid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.educate.model.User" >
-    insert into user (uid, phoneNum, email, 
-      lastLoginType, password, gender, 
-      name, age, identity
+    insert into user (uid, phone_num, email,
+      last_login_type, password, gender,
+      name, age, identity,register_time,last_login_time
       )
-    values (#{uid,jdbcType=VARCHAR}, #{phonenum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{lastlogintype,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{identity,jdbcType=INTEGER}
+    values (#{uid,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+      #{lastLoginType,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER},
+      #{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{identity,jdbcType=INTEGER},#{registerTime,jdbcType=BIGINT},#{lastLoginTime,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.educate.model.User" >
@@ -52,14 +66,14 @@
       <if test="uid != null" >
         uid,
       </if>
-      <if test="phonenum != null" >
-        phoneNum,
+      <if test="phoneNum != null" >
+        phone_num,
       </if>
       <if test="email != null" >
         email,
       </if>
-      <if test="lastlogintype != null" >
-        lastLoginType,
+      <if test="lastLoginType != null" >
+        last_login_type,
       </if>
       <if test="password != null" >
         password,
@@ -76,19 +90,25 @@
       <if test="identity != null" >
         identity,
       </if>
+      <if test="registerTime != null" >
+        register_time,
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="uid != null" >
         #{uid,jdbcType=VARCHAR},
       </if>
-      <if test="phonenum != null" >
-        #{phonenum,jdbcType=VARCHAR},
+      <if test="phoneNum != null" >
+        #{phoneNum,jdbcType=VARCHAR},
       </if>
       <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="lastlogintype != null" >
-        #{lastlogintype,jdbcType=INTEGER},
+      <if test="lastLoginType != null" >
+        #{lastLoginType,jdbcType=INTEGER},
       </if>
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
@@ -105,19 +125,25 @@
       <if test="identity != null" >
         #{identity,jdbcType=INTEGER},
       </if>
+      <if test="registerTime != null" >
+        #{registerTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=BIGINT},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.educate.model.User" >
     update user
     <set >
-      <if test="phonenum != null" >
-        phoneNum = #{phonenum,jdbcType=VARCHAR},
+      <if test="phoneNum != null" >
+        phone_num = #{phoneNum,jdbcType=VARCHAR},
       </if>
       <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="lastlogintype != null" >
-        lastLoginType = #{lastlogintype,jdbcType=INTEGER},
+      <if test="lastLoginType != null" >
+         last_login_type = #{lastLoginType,jdbcType=INTEGER},
       </if>
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
@@ -134,19 +160,27 @@
       <if test="identity != null" >
         identity = #{identity,jdbcType=INTEGER},
       </if>
+      <if test="lastLoginTime != null" >
+        last_login_time = #{lastLoginTime,jdbcType=BIGINT},
+      </if>
+      <if test="registerTime != null" >
+        register_time = #{registerTime,jdbcType=BIGINT},
+      </if>
     </set>
     where uid = #{uid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.educate.model.User" >
     update user
-    set phoneNum = #{phonenum,jdbcType=VARCHAR},
+    set phone_num = #{phoneNum,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      lastLoginType = #{lastlogintype,jdbcType=INTEGER},
+      last_login_type = #{lastLoginType,jdbcType=INTEGER},
       password = #{password,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
-      identity = #{identity,jdbcType=INTEGER}
+      identity = #{identity,jdbcType=INTEGER},
+      register_time = #{registerTime,jdbcType=BIGINT},
+      last_login_time = #{lastLoginTime,jdbcType=BIGINT}
     where uid = #{uid,jdbcType=VARCHAR}
   </update>
 </mapper>

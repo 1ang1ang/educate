@@ -12,11 +12,11 @@ public class User {
     @ApiModelProperty(value = "用户UUID~唯一标识")
     private String uid;
 
-    private String phonenum;
+    private String phoneNum;
 
     private String email;
 
-    private Integer lastlogintype;
+    private Integer lastLoginType;
 
     private String password;
 
@@ -29,6 +29,9 @@ public class User {
     @ApiModelProperty(value = "用户身份标识 0：游客 1：学生 2：教师 3：资料填充员 99：超级管理员")
     private Integer identity;
 
+    private long registerTime;
+    private long lastLoginTime;
+
     public String getUid() {
         return uid;
     }
@@ -37,12 +40,20 @@ public class User {
         this.uid = uid == null ? null : uid.trim();
     }
 
-    public String getPhonenum() {
-        return phonenum;
+    public String getPhoneNum() {
+        return phoneNum;
     }
 
-    public void setPhonenum(String phonenum) {
-        this.phonenum = phonenum == null ? null : phonenum.trim();
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public Integer getLastLoginType() {
+        return lastLoginType;
+    }
+
+    public void setLastLoginType(Integer lastLoginType) {
+        this.lastLoginType = lastLoginType;
     }
 
     public String getEmail() {
@@ -51,14 +62,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
-    }
-
-    public Integer getLastlogintype() {
-        return lastlogintype;
-    }
-
-    public void setLastlogintype(Integer lastlogintype) {
-        this.lastlogintype = lastlogintype;
     }
 
     public String getPassword() {
@@ -99,5 +102,21 @@ public class User {
 
     public void setIdentity(Integer identity) {
         this.identity = identity;
+    }
+
+    public long getRegisterTime() {
+        return registerTime;
+    }
+
+    public void setRegisterTime(long registerTime) {
+        this.registerTime = registerTime;
+    }
+
+    public long getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(long lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 }

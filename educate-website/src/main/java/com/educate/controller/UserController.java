@@ -1,13 +1,13 @@
 package com.educate.controller;
 
+import com.educate.bo.UserRegisterData;
+import com.educate.error.LogicException;
 import com.educate.model.User;
 import com.educate.service.UserService;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,7 +45,8 @@ public class UserController {
 
     @ApiOperation(value = "user register", notes = "send user info to register")
     @RequestMapping(value = "register", method = RequestMethod.PUT)
-    public User register() {
-return null;
+    public User register(@Validated @RequestBody UserRegisterData registerData) throws LogicException {
+//        int a = 1 / 0;
+        return userService.register(registerData);
     }
 }
