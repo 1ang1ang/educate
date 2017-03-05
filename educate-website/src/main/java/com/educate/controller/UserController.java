@@ -42,4 +42,10 @@ public class UserController {
     public User getUserByName(@PathVariable String name){
         return userService.getByName(name);
     }
+
+    @ApiOperation(value = "user register", notes = "send user info to register")
+    @RequestMapping(value = "register", method = RequestMethod.PUT)
+    public User register() {
+return null;
+    }
 }

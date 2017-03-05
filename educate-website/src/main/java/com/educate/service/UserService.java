@@ -1,7 +1,10 @@
 package com.educate.service;
 
+import com.educate.common.JsonResult;
+import com.educate.common.ResultCode;
 import com.educate.mapper.UserMapper;
 import com.educate.model.User;
+import com.educate.util.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +34,21 @@ public class UserService {
 
     public List<User> getAllUser() {
         return userMapper.selectAll();
+    }
+
+    public User register(String value, String password) {
+        boolean isEmail = false;
+        boolean isPhone = false;
+
+        if(RegexUtil.emailCheck(value)) {
+            isEmail = true;
+        } else if(RegexUtil.phoneCheck(value)) {
+            isPhone = true;
+        } else {
+            return new JsonResult(ResultCode.PARAMS_ERROR, "user not exist!");
+        }
+
+        if(isEmail)
+return null;
     }
 }
