@@ -14,11 +14,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class RedisClientTest {
 
     @Autowired
-    private RedisClient client;
+    private RedisSession client;
 
     @Test
     public void redisClientTest() throws Exception {
-        client.set("xxxx", "yyy");
+        client.set("xxxx", "zzz");
         System.out.println(client.get("xxxx"));
 
     }
