@@ -1,5 +1,6 @@
 package com.educate.bo;
 
+import com.educate.util.annotation.CheckSqlInjection;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -14,6 +15,7 @@ public class UserRegisterData {
     @ApiModelProperty(value = "玩家注册邮箱或者手机号")
     private String value;
     @NotNull
+    @CheckSqlInjection
     @ApiModelProperty(value = "密码")
     private String password;
     @ApiModelProperty(value = "昵称")
