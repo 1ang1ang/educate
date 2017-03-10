@@ -12,8 +12,10 @@ import java.util.Properties;
  */
 public class MailUtil {
     private static final String SENDER_MAIL = "13426092307@163.com";
-    private static final String SENDER_MAIL_PASSWORD = "guoyang";
+    private static final String SENDER_MAIL_PASSWORD = "guoyang100";//授权码~须在邮箱设置里面设置
     private static final String SEND_MAIL_SMTP = "smtp.163.com";
+    private static final String SENDER_NAME = "发件人名字";
+
     //邮件配置
     private static final Properties props = new Properties();
 
@@ -27,6 +29,7 @@ public class MailUtil {
     // 网易163邮箱的 SMTP 服务器地址为: smtp.163.com
 
     static {
+        //1.设置邮箱配置属性
         props.setProperty("mail.transport.protocol", "smtp");   // 使用的协议（JavaMail规范要求）
         props.setProperty("mail.smtp.host", SEND_MAIL_SMTP);   // 发件人的邮箱的 SMTP 服务器地址
         props.setProperty("mail.smtp.auth", "true");            // 需要请求认证
@@ -48,7 +51,7 @@ public class MailUtil {
         MimeMessage message = new MimeMessage(session);
 
         // 2. From: 发件人
-        message.setFrom(new InternetAddress(SENDER_MAIL, "发件人名字", "UTF-8"));
+        message.setFrom(new InternetAddress(SENDER_MAIL, SENDER_NAME, "UTF-8"));
 
         // 3. To: 收件人（可以增加多个收件人、抄送、密送）
         message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiveMail, receiverName, "UTF-8"));

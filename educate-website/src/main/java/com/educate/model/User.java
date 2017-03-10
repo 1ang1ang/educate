@@ -31,6 +31,8 @@ public class User {
 
     private long registerTime;
     private long lastLoginTime;
+    private String authority;
+    private boolean forbidden;
 
     public String getUid() {
         return uid;
@@ -118,5 +120,21 @@ public class User {
 
     public void setLastLoginTime(long lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
+    public boolean isForbidden() {
+        return forbidden;
+    }
+
+    public void setForbidden(boolean forbidden) {
+        this.forbidden = forbidden;
     }
 }

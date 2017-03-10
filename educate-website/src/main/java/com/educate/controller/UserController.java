@@ -1,9 +1,11 @@
 package com.educate.controller;
 
 import com.educate.bo.UserRegisterData;
+import com.educate.enums.ApiAuthorityType;
 import com.educate.error.LogicException;
 import com.educate.model.User;
 import com.educate.service.UserService;
+import com.educate.util.annotation.Authority;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +27,7 @@ public class UserController {
      *
      * @return
      */
+//    @Authority(authorityTypes = {ApiAuthorityType.SHOW_USER_INFO})
     @ApiOperation(value="Get all users",notes="requires noting")
     @RequestMapping(method=RequestMethod.GET)
     public List<User> getUsers(){
