@@ -16,6 +16,7 @@ public class User {
 
     private String email;
 
+    @ApiModelProperty(value = "上次登录类型， 1=手机 2=邮箱")
     private Integer lastLoginType;
 
     private String password;

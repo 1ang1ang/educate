@@ -1,11 +1,14 @@
 package com.educate.error;
 
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 游戏异常
  */
 public class LogicException extends Exception {
+    private static final Logger logger = LoggerFactory.getLogger(LogicException.class);
 
     private ResultCode exceptionCode;
     private String[] retObj;
@@ -27,6 +30,7 @@ public class LogicException extends Exception {
 
     public LogicException(ResultCode exceptionCode, String exceptionDesc, String... retObj) {
         super(exceptionDesc);
+        logger.error(exceptionDesc);
         this.retObj = retObj;
         this.exceptionCode = exceptionCode;
     }

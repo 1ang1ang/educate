@@ -1,5 +1,6 @@
 package com.educate.controller;
 
+import com.educate.bo.UserLoginData;
 import com.educate.bo.UserRegisterData;
 import com.educate.enums.ApiAuthorityType;
 import com.educate.error.LogicException;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -48,8 +50,14 @@ public class UserController {
 
     @ApiOperation(value = "user register", notes = "send user info to register")
     @RequestMapping(value = "register", method = RequestMethod.PUT)
-    public User register(@Validated @RequestBody UserRegisterData registerData) throws LogicException {
+    public User register(@Validated @RequestBody UserRegisterData registerData, HttpSession session) throws LogicException {
 //        int a = 1 / 0;
-        return userService.register(registerData);
+        return userService.register(registerData, session);
+    }
+    @ApiOperation(value = "user login", notes = "send user info to login")
+    @RequestMapping(value = "login", method = RequestMethod.PUT)
+    public User login(@Validated @RequestBody UserLoginData loginData, HttpSession session) throws LogicException {
+//        int a = 1 / 0;
+        return userService.login(loginData, session);
     }
 }
